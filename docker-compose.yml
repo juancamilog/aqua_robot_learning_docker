@@ -31,7 +31,7 @@ services:
         image: juancamilog/robot_learning:kusanagi
         depends_on:
             - "aqua_gazebo"
-        command: /bin/bash -c "sleep 10; source /catkin_ws/devel/setup.bash; roslaunch --wait --screen robot_learning basic.launch"
+        command: /bin/bash -c "sleep 15; source /catkin_ws/devel/setup.bash; roslaunch --wait --screen robot_learning basic.launch"
         deploy:
             mode: global
             placement:
@@ -39,14 +39,21 @@ services:
         volumes:
             # keep bash history
             - ${HOME}/.bash_history:/root/.bash_history
-            #  ros workspace
+            # ros workspace
             - ${HOME}/mrl_lunar_ws:/catkin_ws
-            #  kusanagi library
+            # kusanagi library
             - ${HOME}/workspace/kusanagi:/kusanagi
-            #  kusanagi library
+            # theano compile dir
             - /tmp/.theano:/root/.theano
+            # experiment data output
+            - /tmp:/tmp
         environment: 
             MPLBACKEND: Agg
+            OMP_NUM_THREADS: 1
+            OPENBLAS_NUM_THREADS: 1
+            MKL_NUM_THREADS: 4
+            MKL_INTERFACE_LAYER: GNU
+            MKL_THREADING_LAYER: GNU
             ROS_MASTER_URI: http://aqua_gazebo:11311
             GAZEBO_MASTER_URI: http://aqua_gazebo:11345
             ROS_HOSTNAME: mc_pilco
