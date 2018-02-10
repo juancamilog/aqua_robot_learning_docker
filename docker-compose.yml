@@ -31,7 +31,7 @@ services:
         image: juancamilog/robot_learning:kusanagi
         depends_on:
             - "aqua_gazebo"
-        command: /bin/bash -c "sleep 15; source /catkin_ws/devel/setup.bash; roslaunch --wait --screen robot_learning basic.launch"
+        command: /bin/bash -c "sleep 15; rosservice call /aqua/set_gait flexible-sine; source /catkin_ws/devel/setup.bash; roslaunch --wait --screen robot_learning basic.launch"
         deploy:
             mode: global
             placement:
@@ -42,7 +42,7 @@ services:
             # ros workspace
             - ${HOME}/mrl_lunar_ws:/catkin_ws
             # kusanagi library
-            - ${HOME}/workspace/kusanagi:/kusanagi
+            # - ${HOME}/workspace/kusanagi:/kusanagi
             # theano compile dir
             - /tmp/.theano:/root/.theano
             # experiment data output
