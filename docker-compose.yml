@@ -16,6 +16,8 @@ services:
             - ${HOME}/mrl_lunar_ws:/catkin_ws
             # x11
             - /tmp/.X11-unix:/tmp/.X11-unix
+            # x11
+            - /tmp/.gazebo:/root/.gazebo
         environment: 
             DISPLAY: $DISPLAY
             QT_X11_NO_MITSHM: 1
