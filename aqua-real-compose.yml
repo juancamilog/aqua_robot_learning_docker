@@ -1,0 +1,42 @@
+## Local learning version of the compose file for running learning code onthe real robot
+version: "3.3"
+services:
+    mc_pilco_client:
+        image: juancamilog/robot_learning:kusanagi
+        command: /bin/bash -c "sleep 3600;"
+        deploy:
+            mode: global
+            placement:
+                constraints: [node.role == manager]
+        volumes:
+            # keep bash history
+            - ${HOME}/.bash_history:/root/.bash_history
+            # ros workspace
+            - ${HOME}/mrl_lunar_ws:/catkin_ws
+            # kusanagi library
+            #- ${HOME}/workspace/kusanagi:/kusanagi
+            # theano compile dir
+            - /tmp/.theano:/root/.theano
+            # experiment data output
+            - /tmp:/tmp
+        environment: 
+            MPLBACKEND: Agg
+            OMP_NUM_THREADS: 1
+            OPENBLAS_NUM_THREADS: 1
+            MKL_NUM_THREADS: 4
+            MKL_INTERFACE_LAYER: GNU
+            MKL_THREADING_LAYER: GNU
+            #ROS_MASTER_URI: http://vision.aqua5:11311
+            ROS_HOSTNAME: mc_pilco_client
+            TUNNEL_HOST: vision.aqua5.tunnel
+            REMOTE_HOST: vision.aqua5
+            LOCAL_PORT: 11311
+            REMOTE_PORT: 11311
+        networks:
+            - bridge
+            - ros
+networks:
+    bridge:
+        external:
+            name:  bridge
+    ros:

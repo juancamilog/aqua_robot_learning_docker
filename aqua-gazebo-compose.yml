@@ -16,9 +16,7 @@ services:
             - ${HOME}/mrl_lunar_ws:/catkin_ws
             # x11
             - /tmp/.X11-unix:/tmp/.X11-unix
-            # gazebi
-            - /tmp/.gazebo:/root/.gazebo
-        environment:
+        environment: 
             DISPLAY: $DISPLAY
             QT_X11_NO_MITSHM: 1
             ROS_MASTER_URI: http://aqua_gazebo:11311
@@ -31,65 +29,13 @@ services:
     # muliple learning services
     mc_pilco:
         image: juancamilog/robot_learning:kusanagi
-        expose:
-            - "8080"
         depends_on:
             - "aqua_gazebo"
-        command: /bin/bash -c "sleep 15; source /catkin_ws/devel/setup.bash; rosservice call /aqua/set_gait flexible-sine; roslaunch --wait --screen robot_learning basic.launch"
+        command: /bin/bash -c "sleep 15; source /catkin_ws/devel/setup.bash; roslaunch --wait --screen robot_learning basic.launch"
         deploy:
             mode: global
             placement:
                 constraints: [node.role == manager]
-        volumes:
-            # keep bash history
-            - ${HOME}/.bash_history:/root/.bash_history
-            # ros workspace
-            - ${HOME}/mrl_lunar_ws:/catkin_ws
-            # kusanagi library
-            # - ${HOME}/workspace/kusanagi:/kusanagi
-            # theano compile dir
-            - /tmp/.theano:/root/.theano
-            # experiment data output
-            - /tmp:/tmp
-        environment:
-            MPLBACKEND: Agg
-            OMP_NUM_THREADS: 1
-            OPENBLAS_NUM_THREADS: 1
-            MKL_NUM_THREADS: 4
-            MKL_INTERFACE_LAYER: GNU
-            MKL_THREADING_LAYER: GNU
-            ROS_MASTER_URI: http://aqua_gazebo:11311
-            GAZEBO_MASTER_URI: http://aqua_gazebo:11345
-            ROS_HOSTNAME: mc_pilco
-        networks:
-            - ros
-            - bridge
-    visualizer:
-        image: dockersamples/visualizer:stable
-        ports:
-            - "8280:8080"
-        volumes:
-            - "/var/run/docker.sock:/var/run/docker.sock"
-        deploy:
-            placement:
-                constraints: [node.role == manager]
-        networks:
-            - ros
-
-    mc_pilco_server:
-        image: juancamilog/robot_learning:kusanagi
-        ports:
-            - "8008:8008"
-        depends_on:
-            - "aqua_gazebo"
-        command: /bin/bash -c "python /kusanagi/kusanagi/server.py"
-        deploy:
-            replicas: 1
-            restart_policy:
-                condition: on-failure
-            placement:
-                constraints:
-                    - node.hostname == inferno
         volumes:
             # keep bash history
             - ${HOME}/.bash_history:/root/.bash_history
@@ -101,7 +47,7 @@ services:
             - /tmp/.theano:/root/.theano
             # experiment data output
             - /tmp:/tmp
-        environment:
+        environment: 
             MPLBACKEND: Agg
             OMP_NUM_THREADS: 1
             OPENBLAS_NUM_THREADS: 1
@@ -113,8 +59,17 @@ services:
             ROS_HOSTNAME: mc_pilco
         networks:
             - ros
-            - bridge
-
+    visualizer:
+        image: dockersamples/visualizer:stable
+        ports:
+            - "8280:8080"
+        volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock"
+        deploy:
+            placement:
+                constraints: [node.role == manager]
+        networks:
+            - ros
 networks:
     bridge:
         external:
