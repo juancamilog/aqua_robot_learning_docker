@@ -17,7 +17,7 @@ services:
             # x11
             - /tmp/.X11-unix:/tmp/.X11-unix
             # gazebi
-            - /tmp/.gazebo:/root/.gazebo
+            - /localdata/.gazebo:/root/.gazebo
         environment:
             DISPLAY: $DISPLAY
             QT_X11_NO_MITSHM: 1
@@ -48,9 +48,9 @@ services:
             # kusanagi library
             # - ${HOME}/workspace/kusanagi:/kusanagi
             # theano compile dir
-            - /tmp/.theano:/root/.theano
+            - /localdata/.theano:/root/.theano
             # experiment data output
-            - /tmp:/tmp
+            - /localdata:/tmp
         environment:
             MPLBACKEND: Agg
             OMP_NUM_THREADS: 1
@@ -98,9 +98,9 @@ services:
             # kusanagi library
             - ${HOME}/workspace/kusanagi:/kusanagi
             # theano compile dir
-            - /tmp/.theano:/root/.theano
+            - /localdata/.theano:/root/.theano
             # experiment data output
-            - /tmp:/tmp
+            - /localdata:/tmp
         environment:
             MPLBACKEND: Agg
             OMP_NUM_THREADS: 1
