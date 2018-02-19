@@ -44,9 +44,9 @@ services:
             # kusanagi library
             - ${HOME}/workspace/kusanagi:/kusanagi
             # theano compile dir
-            - /tmp/.theano:/root/.theano
+            - /localdata/.theano:/root/.theano
             # experiment data output
-            - /tmp:/tmp
+            - /localdata:/localdata
         environment: 
             MPLBACKEND: Agg
             OMP_NUM_THREADS: 1

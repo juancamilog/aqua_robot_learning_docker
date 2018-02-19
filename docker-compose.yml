@@ -50,7 +50,7 @@ services:
             # theano compile dir
             - /localdata/.theano:/root/.theano
             # experiment data output
-            - /localdata:/tmp
+            - /localdata:/localdata
         environment:
             MPLBACKEND: Agg
             OMP_NUM_THREADS: 1
@@ -100,7 +100,7 @@ services:
             # theano compile dir
             - /localdata/.theano:/root/.theano
             # experiment data output
-            - /localdata:/tmp
+            - /localdata:/localdata
         environment:
             MPLBACKEND: Agg
             OMP_NUM_THREADS: 1
