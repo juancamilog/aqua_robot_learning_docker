@@ -31,7 +31,7 @@ services:
         image: juancamilog/robot_learning:kusanagi
         depends_on:
             - "aqua_gazebo"
-        command: /bin/bash -c "sleep 15; source /catkin_ws/devel/setup.bash; roslaunch --wait --screen robot_learning basic.launch"
+        command: /bin/bash -c "sleep 15; source /catkin_ws/devel/setup.bash; rosservice call /aqua/set_gait flexible-sine; roslaunch --wait --screen robot_learning basic.launch"
         deploy:
             mode: global
             placement:
